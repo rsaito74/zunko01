@@ -794,6 +794,24 @@ function SetStageText() {
 		case 4:
 			stage_str+="南三陸町";
 			break;
+		case 5:
+			stage_str+="石巻市";
+			break;
+		case 6:
+			stage_str+="女川町";
+			break;
+		case 7:
+			stage_str+="涌谷町";
+			break;
+		case 8:
+			stage_str+="美里町";
+			break;
+		case 9:
+			stage_str+="大崎市";
+			break;
+		case 10:
+			stage_str+="加美町";
+			break;
 		default:
 			stage_str+="NO DATA";
 			break;
