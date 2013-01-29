@@ -11,6 +11,8 @@ enchant();
 var BG_IMAGE = "pipo_battlebg001.jpg";
 var ZUNP_NP_IMAGE = "zunp_name.png";
 var HP_NP_IMAGE = "hp_name.png";
+var STAGE_NP_IMAGE = "stage_np.png";
+
 var CHARA01_IMAGE = "my_chara01.png";
 var CHARA01_DAMAGE_IMAGE = "my_chara01d.png";
 var ENE01_IMAGE = "ene01.png";
@@ -29,6 +31,9 @@ var ZUN_BTN_COOK2_IMAGE = "zun_btn_cook02.png";
 var ZUN_BTN_COOK3_IMAGE = "zun_btn_cook03.png";
 var ZUN_BTN_COOK4_IMAGE = "zun_btn_cook04.png";
 var ZUN_EAT_IMAGE = "zzm_taberu.png";
+
+var stage_no = 1;				//ステージ番号
+var stage_name = "栗原市";		//ステージ名
 
 var btn1_type = -1;			//ボタン１の種類
 var btn2_type = -1;			//ボタン２の種類
@@ -56,6 +61,7 @@ window.onload = function(){
 	game.preload(BG_IMAGE);
 	game.preload(ZUNP_NP_IMAGE);
 	game.preload(HP_NP_IMAGE);
+	game.preload(STAGE_NP_IMAGE);
 	game.preload(CHARA01_IMAGE);
 	game.preload(CHARA01_DAMAGE_IMAGE);
 	game.preload(ENE01_IMAGE);
@@ -78,9 +84,51 @@ window.onload = function(){
 
         game.rootScene.backgroundColor = "#000000";
 
+		//背景生成
 		var bg_img = new Sprite(320,320);
 		bg_img.image = game.assets[BG_IMAGE];
 		game.rootScene.addChild(bg_img);
+
+		//ステージ名（下敷き）生成
+		var stage_np = new Sprite(128,32);
+		stage_np.image = game.assets[STAGE_NP_IMAGE];
+		stage_np.x = 320-128;
+		stage_np.y = 16;
+		game.rootScene.addChild(stage_np);
+		//ステージ名（テキスト）生成
+        var stage_name = new Label("");
+		stage_name.x = 320-128+12;
+		stage_name.y = 16+8;
+		stage_name.font = "16px 'sans-serif'"
+		stage_name.text = SetStageText();
+		stage_name.color = "#cff15f";
+		game.rootScene.addChild(stage_name);
+
+		//ずん子生成
+		var chara_img = new Sprite(160,144);
+		chara_img.image = game.assets[CHARA01_IMAGE];
+		chara_img.x = 320-160;
+		chara_img.y = 320-144;
+		chara_img.damage_count = 0;
+		game.rootScene.addChild(chara_img);
+		//ずん子毎フレームイベント
+		chara_img.addEventListener("enterframe",function(){
+			if (zunko_damage_flag) {
+				chara_img.image = game.assets[CHARA01_DAMAGE_IMAGE];
+				chara_img.opacity-=0.5;
+				if (chara_img.opacity < 0.0) {
+					chara_img.opacity = 1.0;
+					if (chara_img.damage_count >= 2) {
+						chara_img.image = game.assets[CHARA01_IMAGE];
+						zunko_damage_flag = false;
+						chara_img.damage_count = 0;
+					}
+					else {
+						chara_img.damage_count++;
+					}
+				}
+			}
+		});
 
 		//ずんだPow（バー下敷き）
 		var zunp_bar_base = new Entity();
@@ -132,32 +180,6 @@ window.onload = function(){
 		hp_np_img.y = 320-40+12;
 		game.rootScene.addChild(hp_np_img);
     	
-		//ずん子生成
-		var chara_img = new Sprite(160,144);
-		chara_img.image = game.assets[CHARA01_IMAGE];
-		chara_img.x = 320-160;
-		chara_img.y = 320-144;
-		chara_img.damage_count = 0;
-		game.rootScene.addChild(chara_img);
-		//ずん子毎フレームイベント
-		chara_img.addEventListener("enterframe",function(){
-			if (zunko_damage_flag) {
-				chara_img.image = game.assets[CHARA01_DAMAGE_IMAGE];
-				chara_img.opacity-=0.5;
-				if (chara_img.opacity < 0.0) {
-					chara_img.opacity = 1.0;
-					if (chara_img.damage_count >= 2) {
-						chara_img.image = game.assets[CHARA01_IMAGE];
-						zunko_damage_flag = false;
-						chara_img.damage_count = 0;
-					}
-					else {
-						chara_img.damage_count++;
-					}
-				}
-			}
-		});
-
 		//敵キャラ生成
 		var ene_img = new Sprite(120,96);
 		ene_img.image = game.assets[ENE01_IMAGE];
@@ -724,6 +746,10 @@ window.onload = function(){
     	var NextStage2 = function() {
 			//自身をイベントリスナから削除
 			game.rootScene.clearEventListener("touchend");
+			
+			//ステージ番号・ステージ表記更新
+			stage_no++;
+			stage_name.text = SetStageText();
     		
     		//敵再セット
     		ene_img.visible = true;
@@ -749,6 +775,31 @@ window.onload = function(){
     };
 
     game.start();
+};
+
+//ステージ番号、ステージ名のセット
+function SetStageText() {
+	var stage_str = "St" + stage_no + " ";
+
+	switch (stage_no) {
+		case 1:
+			stage_str+="栗原市";
+			break;
+		case 2:
+			stage_str+="登米市";
+			break;
+		case 3:
+			stage_str+="気仙沼市";
+			break;
+		case 4:
+			stage_str+="南三陸町";
+			break;
+		default:
+			stage_str+="NO DATA";
+			break;
+	}
+	
+	return stage_str;
 };
 
 //乱数の生成
