@@ -28,6 +28,7 @@ var ZUN_BTN_COOK1_IMAGE = "zun_btn_cook01.png";
 var ZUN_BTN_COOK2_IMAGE = "zun_btn_cook02.png";
 var ZUN_BTN_COOK3_IMAGE = "zun_btn_cook03.png";
 var ZUN_BTN_COOK4_IMAGE = "zun_btn_cook04.png";
+var ZUN_EAT_IMAGE = "zzm_taberu.png";
 
 var btn1_type = -1;			//ボタン１の種類
 var btn2_type = -1;			//ボタン２の種類
@@ -71,6 +72,7 @@ window.onload = function(){
 	game.preload(ZUN_BTN_COOK2_IMAGE);
 	game.preload(ZUN_BTN_COOK3_IMAGE);
 	game.preload(ZUN_BTN_COOK4_IMAGE);
+	game.preload(ZUN_EAT_IMAGE);
 
     game.onload = function(){
 
@@ -444,7 +446,9 @@ window.onload = function(){
 
 			//画面のどこかをタッチしたら発生するイベント
         	//game.rootScene.addEventListener("touchend",NextStage);
-        	game.rootScene.addEventListener("touchend",NextStage0);
+
+			//ずんだモグモグ画像表示
+			zunda_eat_img.anime = true;
 		});
 		//料理ボタン2生成
 		var zun_btn_cook2 = new Sprite(208,32);
@@ -499,7 +503,9 @@ window.onload = function(){
 			
 			//画面のどこかをタッチしたら発生するイベント
 			//game.rootScene.addEventListener("touchend",NextStage);
-			game.rootScene.addEventListener("touchend",NextStage0);
+			
+			//ずんだモグモグ画像表示
+			zunda_eat_img.anime = true;
 		});
 		var ZunCookBtnVisibleOff = function() {
 			zun_btn_cook1.visible = false;		//非表示
@@ -514,6 +520,49 @@ window.onload = function(){
 			zun_btn_cook2.visible = true;		//表示
 		};
 		ZunCookBtnVisibleOff();		//初期状態ではOFF
+
+    	//***** ずんだモグモグ演出 *****
+    	var zunda_eat_img = new Sprite(128,128);
+		zunda_eat_img.image = game.assets[ZUN_EAT_IMAGE];
+		zunda_eat_img.x = (320-128)/2;
+		zunda_eat_img.y = 120;
+		zunda_eat_img.visible = false;			//初期状態は非表示
+		zunda_eat_img.frame = 0;
+		zunda_eat_img.count = 0;
+		zunda_eat_img.anime = false;
+		game.rootScene.addChild(zunda_eat_img);
+		//ずんだモグモグ毎フレーム処理
+		zunda_eat_img.addEventListener("enterframe",function(){
+    		if (zunda_eat_img.anime) {
+				zunda_eat_img.visible = true;
+				//▼カーソル非表示
+				wait_cursor.visible = false;
+				//ずん子顔CG非表示
+				chara_img.visible = false;
+
+				zunda_eat_img.count++;
+				if ((zunda_eat_img.count%10)==0) {
+					if (zunda_eat_img.frame == 0) {
+						zunda_eat_img.frame = 1;
+					}
+					else {
+						zunda_eat_img.frame = 0;
+					}
+					if (zunda_eat_img.count >= 40) {
+						zunda_eat_img.count = 0;
+						zunda_eat_img.frame = 0;
+
+						//ずん子モグモグアニメoff
+						zunda_eat_img.anime = false;
+						//▼カーソル表示
+						wait_cursor.visible = true;
+
+						//画面のどこかをタッチしたら発生するイベント
+						game.rootScene.addEventListener("touchend",NextStage);
+					}
+				}
+			}
+    	});
     	
     	//***** ずん子の攻撃（カットイン演出後） *****
     	var ZunkoAttack = function() {
@@ -658,18 +707,16 @@ window.onload = function(){
 
     	
     	//***** 次のステージへ *****
-    	var NextStage0 = function() {
-			//自身をイベントリスナから削除
-			game.rootScene.clearEventListener("touchend");
-    		
-			//画面のどこかをタッチしたら発生するイベント
-        	game.rootScene.addEventListener("touchend",NextStage);
-    	};
     	var NextStage = function() {
 			//自身をイベントリスナから削除
 			game.rootScene.clearEventListener("touchend");
+
+			//ずん子もぐもぐCG非表示
+			zunda_eat_img.visible = false;
+			//ずん子顔CG表示
+			chara_img.visible = true;
     		
-    		message.text = "ずん子は次のステージへと進んだ…";
+    		message.text = "ずん子は<br>次のステージへと進んだ…";
     		
 			//画面のどこかをタッチしたら発生するイベント
         	game.rootScene.addEventListener("touchend",NextStage2);
