@@ -801,6 +801,81 @@ function SetStageText() {
 		case 10:
 			stage_str+="加美町";
 			break;
+		case 11:
+			stage_str+="色麻町";
+			break;
+		case 12:
+			stage_str+="大衡村";
+			break;
+		case 13:
+			stage_str+="大和町";
+			break;
+		case 14:
+			stage_str+="大郷町";
+			break;
+		case 15:
+			stage_str+="松島町";
+			break;
+		case 16:
+			stage_str+="東松島市";
+			break;
+		case 17:
+			stage_str+="塩竃市";
+			break;
+		case 18:
+			stage_str+="利府町";
+			break;
+		case 19:
+			stage_str+="富谷町";
+			break;
+		case 20:
+			stage_str+="仙台市";
+			break;
+		case 21:
+			stage_str+="多賀城市";
+			break;
+		case 22:
+			stage_str+="七ヶ浜町";
+			break;
+		case 23:
+			stage_str+="名取市";
+			break;
+		case 24:
+			stage_str+="岩沼市";
+			break;
+		case 25:
+			stage_str+="柴田町";
+			break;
+		case 26:
+			stage_str+="村田町";
+			break;
+		case 27:
+			stage_str+="川崎町";
+			break;
+		case 28:
+			stage_str+="蔵王町";
+			break;
+		case 29:
+			stage_str+="大河原町";
+			break;
+		case 30:
+			stage_str+="角田市";
+			break;
+		case 31:
+			stage_str+="亘理町";
+			break;
+		case 32:
+			stage_str+="山元町";
+			break;
+		case 33:
+			stage_str+="丸森町";
+			break;
+		case 34:
+			stage_str+="白石市";
+			break;
+		case 35:
+			stage_str+="七ヶ宿町";
+			break;
 		default:
 			stage_str+="NO DATA";
 			break;
