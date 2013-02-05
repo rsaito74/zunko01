@@ -4,6 +4,7 @@
 //***** ・キャラクター素材：東北ずん子（http://zunko.jp/）
 //***** ・背景素材：ぴぽや（http://piposozai.blog76.fc2.com/）
 //***** ・モンスター素材：【Rド】（http://www.geocities.co.jp/Milano-Cat/3319/）
+//***** ・カットイン背景素材：臼井の会（http://usui.moo.jp/frame2.html）
 
 enchant();
 
@@ -371,6 +372,9 @@ window.onload = function(){
 
 			//2つ目のボタンを設定
 			btn2_type = rand(5);	//0～4
+			while (btn1_type == btn2_type) {
+				btn2_type = rand(5);
+			}
 			switch (btn2_type) {
 				case 0:
 					zun_btn_atk2.image = game.assets[ZUN_BTN_ATK1_IMAGE];
@@ -689,6 +693,9 @@ window.onload = function(){
 			}
 			//2つ目のボタンを設定
 			btn2_type = rand(4);	//0～3
+			while (btn1_type == btn2_type) {
+				btn2_type = rand(4);
+			}
 			switch (btn2_type) {
 				case 0:
 					zun_btn_cook2.image = game.assets[ZUN_BTN_COOK1_IMAGE];
