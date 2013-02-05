@@ -288,13 +288,8 @@ window.onload = function(){
 		zun_btn_atk1.addEventListener("touchend",function(){
 			ZunAtkBtnVisibleOff();		//ボタン表示OFF
 			
-			if (btn1_type == 4) {
-				zunda_use_pow = 2;	//ずんだイートは2消費
-			}
-			else {
-				zunda_use_pow = btn1_type + 1;
-			}
-			zunko_atk_pow = (btn1_type + 1) + zunko_str + rand(2);		//ずん子攻撃値
+			//zunko_atk_pow = (btn1_type + 1) + zunko_str + rand(2);		//ずん子攻撃値
+			zunko_atk_pow = ZunkoAtkPowSet(btn1_type);
 			
 			cut_in_no = btn1_type;
 			cut_in_bg.visible = true;			//表示
@@ -315,13 +310,8 @@ window.onload = function(){
 		zun_btn_atk2.addEventListener("touchend",function(){
 			ZunAtkBtnVisibleOff();		//ボタン表示OFF
 			
-			if (btn2_type == 4) {
-				zunda_use_pow = 2;	//ずんだイートは2消費
-			}
-			else {
-				zunda_use_pow = btn2_type + 1;
-			}
-			zunko_atk_pow = (btn2_type + 1) + zunko_str + rand(2);		//ずん子攻撃値
+			//zunko_atk_pow = (btn2_type + 1) + zunko_str + rand(2);		//ずん子攻撃値
+			zunko_atk_pow = ZunkoAtkPowSet(btn2_type);
 			
 			cut_in_no = btn2_type;
 			cut_in_bg.visible = true;			//表示
@@ -356,7 +346,7 @@ window.onload = function(){
 			switch (btn1_type) {
 				case 0:
 					zun_btn_atk1.image = game.assets[ZUN_BTN_ATK1_IMAGE];
-					zun_btn_atk1.message = "ずん子<br>「一口ずんだアロー！」";
+					zun_btn_atk1.message = "ずん子<br>「プチずんだアロー！」";
 					break;
 				case 1:
 					zun_btn_atk1.image = game.assets[ZUN_BTN_ATK2_IMAGE];
@@ -368,7 +358,7 @@ window.onload = function(){
 					break;
 				case 3:
 					zun_btn_atk1.image = game.assets[ZUN_BTN_ATK4_IMAGE];
-					zun_btn_atk1.message = "ずん子<br>「味噌ずんだアロー！」";
+					zun_btn_atk1.message = "ずん子<br>「極上ずんだアロー！」";
 					break;
 				case 4:
 					zun_btn_atk1.image = game.assets[ZUN_BTN_ATK5_IMAGE];
@@ -384,7 +374,7 @@ window.onload = function(){
 			switch (btn2_type) {
 				case 0:
 					zun_btn_atk2.image = game.assets[ZUN_BTN_ATK1_IMAGE];
-					zun_btn_atk2.message = "ずん子<br>「一口ずんだアロー！」";
+					zun_btn_atk2.message = "ずん子<br>「プチずんだアロー！」";
 					break;
 				case 1:
 					zun_btn_atk2.image = game.assets[ZUN_BTN_ATK2_IMAGE];
@@ -396,7 +386,7 @@ window.onload = function(){
 					break;
 				case 3:
 					zun_btn_atk2.image = game.assets[ZUN_BTN_ATK4_IMAGE];
-					zun_btn_atk2.message = "ずん子<br>「味噌ずんだアロー！」";
+					zun_btn_atk2.message = "ずん子<br>「極上ずんだアロー！」";
 					break;
 				case 4:
 					zun_btn_atk2.image = game.assets[ZUN_BTN_ATK5_IMAGE];
@@ -594,7 +584,6 @@ window.onload = function(){
     		
     		if (cut_in_no == 4) {	//ずんだイートなら
 	    		//HP回復
-    			//zunko_atk_pow = zunko_atk_pow * 2;
 	    		zunko_hp+=zunko_atk_pow;
 	    		//HPバー回復
 	    		hp_bar.width = (zunko_hp / zunko_hp_max) * hp_bar_base.width;
@@ -818,6 +807,38 @@ function SetStageText() {
 	}
 	
 	return stage_str;
+};
+
+//ずん子攻撃値セット
+function ZunkoAtkPowSet(btn_type) {
+	//zunko_atk_pow = (btn1_type + 1) + zunko_str + rand(2);		//ずん子攻撃値
+	var ret_pow = 0;
+	switch(btn_type) {
+		case 0:		//プチずんだアロー
+			zunda_use_pow = 1;
+			ret_pow = 1 + zunko_str + rand(2);
+			break;
+		case 1:		//大粒ずんだアロー
+			zunda_use_pow = 2;
+			ret_pow = 2 + zunko_str + rand(2);
+			break;
+		case 2:		//こし餡ずんだアロー
+			zunda_use_pow = 4;
+			ret_pow = 4 + zunko_str + rand(2);
+			break;
+		case 3:		//極上ずんだアロー
+			zunda_use_pow = 8;
+			ret_pow = 8 + zunko_str + rand(2);
+			break;
+		case 4:		//ずんだイート
+			zunda_use_pow = 2;	//ずんだイートは2消費
+			ret_pow = Math.floor(zunko_hp_max / 2) + rand(2);
+			break;
+		default:
+    		message.text = "エラーだよ";
+			break;
+	}
+	return ret_pow;
 };
 
 //乱数の生成
